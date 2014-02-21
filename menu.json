@@ -1,0 +1,29 @@
+{
+    "button": [
+        {
+            "type": "view",
+            "name": "公司简介",
+            "url": "http://www.luckysanya.com/about.html"
+        },
+        {
+            "name": "资讯",
+            "sub_button": [
+                {
+                    "type": "click",
+                    "name": "开业信息",
+                    "key": "NEWS_OPEN_20140118"
+                }
+            ]
+        },
+        {
+            "name": "游戏介绍",
+            "sub_button": [
+                {
+                    "type": "view",
+                    "name": "电子桌面互动游戏",
+                    "url": "http://www.luckysanya.com/xiuxian.html"
+                }
+            ]
+        }
+    ]
+}

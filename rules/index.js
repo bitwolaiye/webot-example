@@ -17,6 +17,44 @@ var base_url = 'http://107.170.45.79';
  * 初始化路由规则
  */
 module.exports = exports = function (webot) {
+
+    webot.set('subscribe', {
+        pattern: function(info) {
+            return info.is('event') && info.param.event === 'subscribe';
+        },
+        handler: function(info) {
+            return "欢迎关注好运三亚服务号";
+        }
+    });
+
+    webot.set('click', {
+        pattern: function(info) {
+            return info.is('event') && info.param.event === 'click';
+        },
+        handler: function(info) {
+            if (info.param.eventKey === "NEWS_OPEN_20140118"){
+                return [{
+                    title: '"好运三亚”游戏大厅盛大开业',
+                    pic: base_url + '/images/wechat/logo.jpg',
+                    url: base_url + '',
+                    description: '首家“好运三亚”游戏大厅（大东海店）于2014年1月18日盛大开业。' +
+                        '该游戏大厅位于三亚市榆亚路林达海景酒店3层，地处三亚湾核心区域，正对大东海广场，厅内面积1500平方米，' +
+                        '布置百余台视频游戏终端机供参与者体验，开业初期营业时间为14:00-23:00（2014年1月31日-2月2日休息）。'
+                },{
+                    title: '“好运三亚”游戏介绍',
+                    pic: base_url + '/images/wechat/game_1_1.jpg',
+                    url: base_url + '/xiuxian.html',
+                    description: '“好运三亚”旅游娱乐游戏是遵照国务院和海南省关于海南国际旅游岛建设相关政策精神，' +
+                        '以丰富三亚旅游文化要素、带动三亚旅游新业态发展、拉动三亚旅游消费，促进三亚旅游市场淡旺季平衡、' +
+                        '探索适合三亚特色的旅游营销新模式和旅游相关现代服务业转型升级新途径为宗旨，本着“先行先试”方针而开发，' +
+                        '经行业主管部门许可合法经营的健康娱乐项目。'
+                }];
+            }else{
+                return 'Thank you.';
+            }
+        }
+    });
+
     var reg_help = /^(help|\?|Help|？)$/i
     webot.set({
         // name 和 description 都不是必须的
