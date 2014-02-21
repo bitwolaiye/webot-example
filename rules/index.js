@@ -20,7 +20,7 @@ module.exports = exports = function (webot) {
 
     webot.set('subscribe', {
         pattern: function(info) {
-            return info.is('event') && info.param.event === 'subscribe';
+            return info.is('event') && info.param.event.toLowerCase() === 'subscribe';
         },
         handler: function(info) {
             return "欢迎关注好运三亚服务号";
@@ -29,7 +29,7 @@ module.exports = exports = function (webot) {
 
     webot.set('click', {
         pattern: function(info) {
-            return info.is('event') && info.param.event === 'click';
+            return info.is('event') && info.param.event.toLowerCase() === 'click';
         },
         handler: function(info) {
             if (info.param.eventKey === "NEWS_OPEN_20140118"){
