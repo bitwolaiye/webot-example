@@ -17,7 +17,7 @@ var base_url = 'http://107.170.45.79';
  * 初始化路由规则
  */
 module.exports = exports = function (webot) {
-    var reg_help = /^(help|\?|Help)$/i
+    var reg_help = /^(help|\?|Help|？)$/i
     webot.set({
         // name 和 description 都不是必须的
         name: 'hello help',
@@ -29,15 +29,13 @@ module.exports = exports = function (webot) {
         handler: function (info) {
             var reply = {
                 title: '感谢你关注好运三亚!',
-                pic: base_url + '/image/wechat/logo.jpg',
+                pic: base_url + '/images/wechat/logo.jpg',
                 url: base_url,
                 description: [
                     '你可以试试以下指令:',
-//            'game : 玩玩猜数字的游戏吧',
-//            's+空格+关键词 : 我会帮你百度搜索喔',
-//            's+空格+nde : 可以试试我的纠错能力',
-//            '使用「位置」发送你的经纬度',
-                    '重看本指令请回复help或问号',
+                    'game : 查看游戏介绍',
+                    'where : 查看游戏厅位置',
+                    '重看请回复help或?',
                     '更多指令请回复more'
                 ].join('\n')
             };
@@ -47,7 +45,7 @@ module.exports = exports = function (webot) {
     });
 
     // 更简单地设置一条规则
-    webot.set(/^more$/i, function (info) {
+    webot.set(/^m|More$/i, function (info) {
         var reply = _.chain(webot.gets()).filter(function (rule) {
             return rule.description;
         }).map(function (rule) {
@@ -55,12 +53,28 @@ module.exports = exports = function (webot) {
                 return '> ' + rule.description;
             }).join('\n').value();
 
-        return ['no more.\n可用的指令:\n' + reply,
-            '没有更多啦！当前可用指令：\n' + reply];
+        return '好运三亚欢迎您:\n' + reply;
+    });
+
+
+    webot.set('where', {
+        description: '想知道怎么去吗? 发送: where',
+        // pattern 既可以是函数，也可以是 regexp 或 字符串(模糊匹配)
+        pattern: /where|在哪|地点\?]+/i,
+        handler: function (info){
+            var reply = {
+                title: '欢迎您来好运三亚!',
+                pic: base_url + '/images/wechat/where.jpg',
+                url: base_url + '/lx.html',
+                description: '详细地址:\n' +
+                    '三亚市大东海榆亚大道林达海景酒店3层'
+            };
+            return reply;
+        }
     });
 
     webot.set('who_are_you', {
-        description: '想知道我是谁吗? 发送: who?',
+        description: '想知道我是谁吗? 发送: who',
         // pattern 既可以是函数，也可以是 regexp 或 字符串(模糊匹配)
         pattern: /who|你是[谁\?]+/i,
         // 回复handler也可以直接是字符串或数组，如果是数组则随机返回一个子元素
@@ -69,7 +83,7 @@ module.exports = exports = function (webot) {
 
     // 正则匹配后的匹配组存在 info.query 中
     webot.set('your_name', {
-        description: '自我介绍下吧, 发送: I am [enter_your_name]',
+//        description: '自我介绍下吧, 发送: I am [enter_your_name]',
         pattern: /^(?:my name is|i am|我(?:的名字)?(?:是|叫)?)\s*(.*)$/i,
 
         // handler: function(info, action){
@@ -84,13 +98,17 @@ module.exports = exports = function (webot) {
     webot.dialog(__dirname + '/dialog.yaml');
 
 
-    var game_list_desc = '"好运三亚"游戏是针对三亚旅游人群和本地居民特别开发的大众型娱乐游戏。它充分借鉴国内外竞猜游戏和彩票的先进理念与成功经验，紧密融合三亚的旅游元素，注重参与者的娱乐体验，游戏设计比肩国际，旨在打造旅游娱乐游戏新概念。首期投入运营的游戏产品包括：电子即开娱乐类游戏、电子桌面互动类游戏和体育赛事竞猜类游戏\n' +
+
+    var game_list_desc = '"好运三亚"游戏是针对三亚旅游人群和本地居民特别开发的大众型娱乐游戏。\n' +
+        '它充分借鉴国内外竞猜游戏和彩票的先进理念与成功经验，紧密融合三亚的旅游元素，注重参与者的娱乐体验，游戏设计比肩国际，' +
+        '旨在打造旅游娱乐游戏新概念。\n' +
+        '首期投入运营的游戏产品包括：\n' +
         '1 - 电子即开娱乐类游戏\n' +
         '2 - 电子桌面互动类游戏\n' +
         '3 - 体育赛事竞猜类游戏';
     var game_1_1 = {
         title: '一件倾心',
-        pic: base_url + '/image/wechat/game_1_1.jpg',
+        pic: base_url + '/images/wechat/game_1_1.jpg',
         url: base_url + '/xiuxian_yjqx.html',
         description: '一件倾心游戏介绍...balabala....\n' +
             '1 - 返回电子即开娱乐类游戏\n' +
@@ -98,7 +116,7 @@ module.exports = exports = function (webot) {
     };
     var game_1_2 = {
         title: '看我72变',
-        pic: base_url + '/image/wechat/game_1_2.jpg',
+        pic: base_url + '/images/wechat/game_1_2.jpg',
         url: base_url + '/xiuxian_72bian.html',
         description: '看我72变游戏介绍...balabala....\n' +
             '1 - 返回电子即开娱乐类游戏\n' +
@@ -106,7 +124,7 @@ module.exports = exports = function (webot) {
     };
     var game_1_3 = {
         title: '缤纷假日',
-        pic: base_url + '/image/wechat/game_1_3.jpg',
+        pic: base_url + '/images/wechat/game_1_3.jpg',
         url: base_url + '/xiuxian_binfen.html',
         description: '缤纷假日游戏介绍...balabala....\n' +
             '1 - 返回电子即开娱乐类游戏\n' +
